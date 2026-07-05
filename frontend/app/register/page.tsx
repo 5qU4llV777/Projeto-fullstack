@@ -41,7 +41,7 @@ export default function RegisterPage() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
-          className="rounded-lg border border-zinc-300 px-4 py-2 outline-none focus:border-zinc-900"
+          className="rounded-lg border border-zinc-300 px-4 py-2 text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900"
         />
         <input
           type="email"
@@ -49,7 +49,7 @@ export default function RegisterPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className="rounded-lg border border-zinc-300 px-4 py-2 outline-none focus:border-zinc-900"
+          className="rounded-lg border border-zinc-300 px-4 py-2 text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900"
         />
         <input
           type="password"
@@ -58,7 +58,7 @@ export default function RegisterPage() {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={6}
-          className="rounded-lg border border-zinc-300 px-4 py-2 outline-none focus:border-zinc-900"
+          className="rounded-lg border border-zinc-300 px-4 py-2 text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900"
         />
 
         {error && <p className="text-sm text-red-600">{error}</p>}
