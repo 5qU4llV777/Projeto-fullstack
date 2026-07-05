@@ -78,7 +78,7 @@ export default function TasksPage() {
           placeholder="Novo projeto"
           value={newProjectName}
           onChange={(e) => setNewProjectName(e.target.value)}
-          className="flex-1 rounded-lg border border-zinc-300 px-4 py-2 text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900"
+          className="flex-1 rounded-lg border border-zinc-300 bg-zinc-50 px-4 py-2 text-zinc-900 placeholder:text-zinc-400 outline-none focus:border-zinc-900"
         />
         <button
           type="submit"

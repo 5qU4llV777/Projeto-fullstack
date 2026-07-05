@@ -10,6 +10,7 @@ O TaskFlow permite que usuários se cadastrem, criem projetos e organizem tarefa
 - Separação clara entre dados relacionais e não-relacionais, usando cada banco onde faz mais sentido
 - Autenticação segura com JWT
 - Tipagem end-to-end com TypeScript, tanto no frontend quanto no backend
+- Navegação fluida entre páginas, sem necessidade de digitar URLs manualmente
 
 ## Tecnologias utilizadas
 
@@ -32,6 +33,7 @@ O TaskFlow permite que usuários se cadastrem, criem projetos e organizem tarefa
 
 ```
 Projeto-fullstack/
+├── package.json            # Script raiz para rodar backend + frontend juntos
 ├── backend/
 │   ├── src/
 │   │   ├── modules/
@@ -52,6 +54,7 @@ Projeto-fullstack/
     │   ├── layout.tsx
     │   └── page.tsx
     ├── components/
+    │   └── Navbar.tsx          # Navegação fixa presente em todas as páginas
     ├── services/               # Comunicação com a API (axios)
     └── types/
 ```
@@ -65,6 +68,7 @@ Projeto-fullstack/
 - [x] Excluir tarefas
 - [x] Proteção de rotas da API com guard de autenticação
 - [x] Validação de dados de entrada (DTOs)
+- [x] Navegação por menu fixo (login, cadastro, tarefas, logout), sem precisar digitar URLs
 
 ## Como rodar o projeto localmente
 
@@ -79,11 +83,7 @@ git clone https://github.com/5qU4llV777/Projeto-fullstack.git
 cd Projeto-fullstack
 ```
 
-### 2. Configurar e rodar o backend
-```bash
-cd backend
-npm install
-```
+### 2. Configurar as variáveis de ambiente do backend
 
 Crie um arquivo `.env` na pasta `backend` baseado no `.env.example`:
 ```
@@ -99,22 +99,34 @@ JWT_SECRET=uma_chave_secreta_qualquer
 PORT=3001
 ```
 
-Suba o servidor:
-```bash
-npm run start:dev
-```
+### 3. Instalar as dependências
 
-O backend estará disponível em `http://localhost:3001`.
-
-### 3. Configurar e rodar o frontend
-Em outro terminal:
 ```bash
-cd frontend
+npm install --prefix backend
+npm install --prefix frontend
 npm install
+```
+(o último `npm install`, na raiz, instala o `concurrently`, usado para rodar os dois projetos juntos)
+
+### 4. Rodar backend e frontend com um único comando
+
+Na raiz do projeto:
+```bash
 npm run dev
 ```
 
-O frontend estará disponível em `http://localhost:3000`.
+Isso sobe os dois servidores ao mesmo tempo, em um único terminal, com os logs identificados por cor:
+- `[BACKEND]` → disponível em `http://localhost:3001`
+- `[FRONTEND]` → disponível em `http://localhost:3000`
+
+**Alternativa:** caso prefira rodar cada um separadamente (em dois terminais):
+```bash
+# terminal 1
+cd backend && npm run start:dev
+
+# terminal 2
+cd frontend && npm run dev
+```
 
 ## Endpoints principais da API
 
@@ -170,6 +182,9 @@ Dados com relacionamento claro e estrutura fixa (usuários, projetos, tarefas) v
 
 **Por que Nest.js?**
 A estrutura modular do Nest (módulos, controllers, services, DTOs) impõe organização e separação de responsabilidades desde o início, facilitando manutenção e testes.
+
+**Por que um script raiz com `concurrently`?**
+Facilita rodar o projeto inteiro em ambiente de desenvolvimento com um único comando, sem precisar abrir e gerenciar dois terminais manualmente.
 
 ## Autor
 
