@@ -1,98 +1,176 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# TaskFlow
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Plataforma full-stack de gerenciamento de tarefas, desenvolvida como projeto de portfólio para demonstrar domínio de desenvolvimento full-stack moderno: **React/Next.js** no frontend e **Node.js/Nest.js** no backend, com persistência híbrida em **PostgreSQL** e **MongoDB**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Sobre o projeto
 
-## Description
+O TaskFlow permite que usuários se cadastrem, criem projetos e organizem tarefas dentro de cada projeto, marcando-as como concluídas ou excluindo-as. O projeto foi construído com foco em:
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+- Arquitetura organizada em módulos (backend) e componentes reutilizáveis (frontend)
+- Separação clara entre dados relacionais e não-relacionais, usando cada banco onde faz mais sentido
+- Autenticação segura com JWT
+- Tipagem end-to-end com TypeScript, tanto no frontend quanto no backend
 
-## Project setup
+## Tecnologias utilizadas
 
-```bash
-$ npm install
+### Backend
+- **Node.js** com **Nest.js** (arquitetura modular: controllers, services, DTOs)
+- **TypeScript**
+- **PostgreSQL** via TypeORM — dados relacionais: usuários, projetos e tarefas
+- **MongoDB** via Mongoose — dados não-relacionais: notificações e logs
+- **JWT** (`@nestjs/jwt` + `passport-jwt`) para autenticação
+- **class-validator** para validação de DTOs
+- **bcrypt** para hash de senhas
+
+### Frontend
+- **Next.js** (App Router)
+- **React** com **TypeScript**
+- **Tailwind CSS** para estilização
+- **Axios** para comunicação com a API
+
+## Estrutura do projeto
+
+```
+Projeto-fullstack/
+├── backend/
+│   ├── src/
+│   │   ├── modules/
+│   │   │   ├── auth/          # Registro, login e JWT
+│   │   │   ├── users/         # Usuários (PostgreSQL)
+│   │   │   ├── projects/      # Projetos (PostgreSQL)
+│   │   │   ├── tasks/         # Tarefas (PostgreSQL)
+│   │   │   └── notifications/ # Logs e comentários (MongoDB)
+│   │   ├── app.module.ts
+│   │   └── main.ts
+│   └── .env.example
+│
+└── frontend/
+    ├── app/
+    │   ├── login/
+    │   ├── register/
+    │   ├── tasks/
+    │   ├── layout.tsx
+    │   └── page.tsx
+    ├── components/
+    ├── services/               # Comunicação com a API (axios)
+    └── types/
 ```
 
-## Compile and run the project
+## Funcionalidades
 
+- [x] Cadastro e login de usuários com JWT
+- [x] Criação de projetos
+- [x] Criação de tarefas vinculadas a um projeto
+- [x] Marcar tarefas como concluídas
+- [x] Excluir tarefas
+- [x] Proteção de rotas da API com guard de autenticação
+- [x] Validação de dados de entrada (DTOs)
+
+## Como rodar o projeto localmente
+
+### Pré-requisitos
+- Node.js 18+
+- PostgreSQL rodando localmente (ou acesso a uma instância)
+- Uma conexão MongoDB (local ou [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), gratuito)
+
+### 1. Clonar o repositório
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone https://github.com/5qU4llV777/Projeto-fullstack.git
+cd Projeto-fullstack
 ```
 
-## Run tests
-
+### 2. Configurar e rodar o backend
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+cd backend
+npm install
 ```
 
-## Deployment
+Crie um arquivo `.env` na pasta `backend` baseado no `.env.example`:
+```
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=sua_senha
+POSTGRES_DB=fullstackdb
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+MONGO_URI=sua_connection_string_do_mongodb
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+JWT_SECRET=uma_chave_secreta_qualquer
+PORT=3001
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+Suba o servidor:
+```bash
+npm run start:dev
+```
 
-## Resources
+O backend estará disponível em `http://localhost:3001`.
 
-Check out a few resources that may come in handy when working with NestJS:
+### 3. Configurar e rodar o frontend
+Em outro terminal:
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+O frontend estará disponível em `http://localhost:3000`.
 
-## Support
+## Endpoints principais da API
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+| Método | Rota                | Descrição                        | Autenticação |
+|--------|---------------------|-----------------------------------|:---:|
+| POST   | `/auth/register`    | Cria um novo usuário              | Não |
+| POST   | `/auth/login`        | Autentica e retorna um JWT        | Não |
+| GET    | `/projects`          | Lista todos os projetos           | Sim |
+| POST   | `/projects`          | Cria um novo projeto              | Sim |
+| GET    | `/tasks`              | Lista todas as tarefas            | Sim |
+| POST   | `/tasks`              | Cria uma nova tarefa              | Sim |
+| PATCH  | `/tasks/:id`          | Atualiza uma tarefa               | Sim |
+| DELETE | `/tasks/:id`          | Remove uma tarefa                 | Sim |
 
-## Stay in touch
+Para rotas autenticadas, envie o token no header:
+```
+Authorization: Bearer <accessToken>
+```
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Exemplo de fluxo de teste
 
-## License
+**1. Registrar um usuário**
+```json
+POST /auth/register
+{
+  "name": "Maria Silva",
+  "email": "maria@email.com",
+  "password": "senha123"
+}
+```
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+**2. Criar um projeto** (com o token retornado no passo anterior)
+```json
+POST /projects
+{
+  "name": "Meu primeiro projeto"
+}
+```
+
+**3. Criar uma tarefa**
+```json
+POST /tasks
+{
+  "title": "Minha primeira tarefa",
+  "projectId": 1
+}
+```
+
+## Decisões de arquitetura
+
+**Por que PostgreSQL e MongoDB juntos?**
+Dados com relacionamento claro e estrutura fixa (usuários, projetos, tarefas) vivem no PostgreSQL, aproveitando integridade referencial e transações. Dados de escrita frequente e schema mais flexível (logs de atividade e comentários) vivem no MongoDB, evitando sobrecarregar o modelo relacional com colunas específicas para cada tipo de evento.
+
+**Por que Nest.js?**
+A estrutura modular do Nest (módulos, controllers, services, DTOs) impõe organização e separação de responsabilidades desde o início, facilitando manutenção e testes.
+
+## Autor
+
+Desenvolvido por [5qU4llV777](https://github.com/5qU4llV777) como projeto de portfólio.
