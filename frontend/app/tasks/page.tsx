@@ -12,19 +12,26 @@ export default function TasksPage() {
   const [projectId, setProjectId] = useState<number | ''>('');
   const [newProjectName, setNewProjectName] = useState('');
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
 
   async function loadData() {
     setLoading(true);
-    const [tasksData, projectsData] = await Promise.all([
-      getTasks(),
-      getProjects(),
-    ]);
-    setTasks(tasksData);
-    setProjects(projectsData);
-    if (projectsData.length > 0 && !projectId) {
-      setProjectId(projectsData[0].id);
+    setErrorMsg('');
+    try {
+      const [tasksData, projectsData] = await Promise.all([
+        getTasks(),
+        getProjects(),
+      ]);
+      setTasks(tasksData);
+      setProjects(projectsData);
+      if (projectsData.length > 0 && !projectId) {
+        setProjectId(projectsData[0].id);
+      }
+    } catch (err) {
+      setErrorMsg('Não foi possível carregar seus dados. Faça login novamente.');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   useEffect(() => {
@@ -62,6 +69,7 @@ export default function TasksPage() {
   return (
     <main className="flex flex-1 flex-col items-center px-6 py-10 gap-8">
       <h1 className="text-3xl font-bold text-zinc-900">Minhas tarefas</h1>
+      {errorMsg && <p className="text-red-600">{errorMsg}</p>}
 
       {/* Criar projeto */}
       <form onSubmit={handleCreateProject} className="flex w-full max-w-md gap-2">
